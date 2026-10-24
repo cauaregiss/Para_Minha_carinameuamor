@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cauã & Carina - Nosso 1º Mês de Amor Incondicional 💖</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            midnight: '#0D0208',
+            deepVelvet: '#1D020B',
+            passionRed: '#E60039',
+            softRose: '#FFB3C1',
+            silkGold: '#F7D070',
+            champagne: '#FFF0D4',
+            royalPurple: '#2B042C',
+          },
+          fontFamily: {
+            greatVibes: ['"Great Vibes"', 'cursive'],
+            playfair: ['"Playfair Display"', 'serif'],
+            outfit: ['"Outfit"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Luxury Theme & Glow Animations */
+    body {
+      background: radial-gradient(circle at top center, #2B042C 0%, #1D020B 45%, #0D0208 100%);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Ambient Background Canvas */
+    #ambient-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Glassmorphism Classes */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 179, 193, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card-interactive {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .glass-card-interactive:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(247, 208, 112, 0.4);
+      box-shadow: 0 25px 50px rgba(230, 0, 57, 0.25), 0 0 20px rgba(247, 208, 112, 0.2);
+    }
+
+    .gold-glow-text {
+      text-shadow: 0 0 15px rgba(247, 208, 112, 0.5), 0 0 30px rgba(230, 0, 57, 0.3);
+    }
+
+    /* Envelope Interactive Styles */
+    .envelope-container {
+      perspective: 1200px;
+    }
+    .envelope {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      height: 300px;
+      background: linear-gradient(135deg, #A3082C 0%, #670014 100%);
+      border-radius: 16px;
+      cursor: pointer;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.1);
+      transition: transform 0.6s ease;
+    }
+    .envelope:hover {
+      transform: translateY(-8px);
+    }
+    .envelope .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 260px solid transparent;
+      border-right: 260px solid transparent;
+      border-top: 160px solid #C40C38;
+      transform-origin: top;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s ease;
+      z-index: 4;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+    }
+    @media (max-width: 560px) {
+      .envelope { height: 240px; }
+      .envelope .flap {
+        border-left-width: 45vw;
+        border-right-width: 45vw;
+        border-top-width: 130px;
+      }
+    }
+    .envelope.open .flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+    .envelope .letter {
+      position: absolute;
+      bottom: 12px;
+      left: 4%;
+      width: 92%;
+      height: 92%;
+      background: #FFFDF9;
+      color: #1A050B;
+      padding: 24px;
+      border-radius: 12px;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s, opacity 0.5s ease;
+      z-index: 2;
+      box-shadow: 0 -8px 25px rgba(0,0,0,0.25);
+      overflow-y: auto;
+      border: 1px solid #F3C68F;
+    }
+    .envelope.open .letter {
+      transform: translateY(-130px) scale(1.03);
+      z-index: 5;
+    }
+
+    /* 3D Flip Card */
+    .flip-card { perspective: 1000px; }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2rem;
+    }
+    .flip-card-back { transform: rotateY(180deg); }
+
+    /* Custom Scrollbar */
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #C40C38; border-radius: 10px; }
+
+    /* Floating Musical Notes Animation */
+    .note-anim {
+      position: absolute;
+      animation: floatNote 3s linear infinite;
+      opacity: 0;
+      color: #F7D070;
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+    @keyframes floatNote {
+      0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 0.8; }
+      100% { transform: translateY(-70px) scale(1.2) rotate(25deg); opacity: 0; }
+    }
+
+    /* Pulse Heartbeat Button */
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(230, 0, 57, 0.6); }
+      14%, 42% { transform: scale(1.06); box-shadow: 0 0 45px rgba(230, 0, 57, 0.9); }
+      28% { transform: scale(1.02); }
+    }
+    .pulse-heartbeat { animation: heartbeat 2.2s infinite ease-in-out; }
+  </style>
+</head>
+<body class="relative selection:bg-passionRed selection:text-white">
+
+  <!-- Canvas de Partículas Flutuantes -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <audio id="romantic-audio" src="audio/roupa-nova-dona-ao-vivo.mp3" preload="metadata" loop></audio>
+
+  <div class="relative z-10 flex flex-col items-center px-4 py-8 md:py-12 max-w-5xl mx-auto space-y-24">
+
+    <!-- ======================================= -->
+    <!-- 1. HERO HEADER ROMÂNTICO                -->
+    <!-- ======================================= -->
+    <header class="text-center space-y-8 w-full pt-4 relative">
+      
+      <!-- Selo Especial de 1 Mês -->
+      <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-passionRed/20 via-royalPurple/40 to-passionRed/20 border border-passionRed/40 text-softRose text-xs sm:text-sm tracking-widest font-semibold uppercase backdrop-blur-md shadow-xl animate-pulse">
+        <i class="fa-solid fa-sparkles text-silkGold"></i>
+        <span>Cauã & Carina • 1 Mês Juntos</span>
+        <i class="fa-solid fa-sparkles text-silkGold"></i>
+      </div>
+
+      <!-- Título Encantador -->
+      <div class="space-y-2">
+        <h1 class="font-greatVibes text-6xl sm:text-7xl md:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-champagne via-softRose to-silkGold leading-tight gold-glow-text drop-shadow-2xl">
+          Nosso 1º Mês de Amor
+        </h1>
+        <p class="font-playfair text-xl sm:text-2xl md:text-3xl text-softRose/90 italic max-w-3xl mx-auto font-light">
+          "24 de Setembro de 2026 foi o dia em que o destino sorriu para nós. 30 dias depois, tenho a certeza de que você é meu porto seguro."
+        </p>
+      </div>
+
+      <!-- Botão de Iniciar Experiência com Música e Pétalas -->
+      <div class="pt-2 flex justify-center">
+        <button id="hero-start-btn" onclick="startRomanticExperience()" class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-passionRed via-pink-600 to-passionRed text-white font-semibold text-lg shadow-2xl hover:shadow-passionRed/60 hover:scale-105 active:scale-95 transition duration-300 border border-silkGold/40">
+          <i class="fa-solid fa-heart text-silkGold text-xl group-hover:animate-bounce"></i>
+          <span>Iniciar Experiência Romântica</span>
+          <i class="fa-solid fa-music text-silkGold text-sm"></i>
+        </button>
+      </div>
+    </header>
+
+
+    <!-- ======================================= -->
+    <!-- 2. CONTADOR EM TEMPO REAL               -->
+    <!-- ======================================= -->
+    <section class="w-full max-w-4xl">
+      <div class="glass-card rounded-3xl p-6 md:p-10 text-center space-y-6 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-passionRed/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <h2 class="font-playfair text-xl md:text-2xl text-silkGold font-semibold uppercase tracking-wider">
+          <i class="fa-solid fa-clock text-passionRed mr-2"></i>Contando Cada Segundo Ao Seu Lado
+        </h2>
+
+        <!-- Mostrador Numérico -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 pt-2">
+          
+          <div class="glass-card rounded-2xl p-4 md:p-6 text-center border-rose-500/20 transform hover:-translate-y-1 transition">
+            <span id="counter-days" class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-champagne block gold-glow-text">30</span>
+            <span class="text-xs sm:text-sm text-softRose font-medium uppercase tracking-widest mt-1 block">Dias</span>
+          </div>
+
+          <div class="glass-card rounded-2xl p-4 md:p-6 text-center border-rose-500/20 transform hover:-translate-y-1 transition">
+            <span id="counter-hours" class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-champagne block gold-glow-text">00</span>
+            <span class="text-xs sm:text-sm text-softRose font-medium uppercase tracking-widest mt-1 block">Horas</span>
+          </div>
+
+          <div class="glass-card rounded-2xl p-4 md:p-6 text-center border-rose-500/20 transform hover:-translate-y-1 transition">
+            <span id="counter-minutes" class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-champagne block gold-glow-text">00</span>
+            <span class="text-xs sm:text-sm text-softRose font-medium uppercase tracking-widest mt-1 block">Minutos</span>
+          </div>
+
+          <div class="glass-card rounded-2xl p-4 md:p-6 text-center border-rose-500/20 transform hover:-translate-y-1 transition">
+            <span id="counter-seconds" class="font-playfair text-4xl sm:text-5xl md:text-6xl font-bold text-passionRed block animate-pulse">00</span>
+            <span class="text-xs sm:text-sm text-softRose font-medium uppercase tracking-widest mt-1 block">Segundos</span>
+          </div>
+
+        </div>
+
+        <p class="text-xs text-softRose/70 italic font-light pt-2">
+          Oficialmente juntos desde 24 de Setembro de 2026. Hoje, dia 24 de Outubro, é o nosso primeiro de muitos aniversários!
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ======================================= -->
+    <!-- 3. MURAL POLAROID INTERATIVO            -->
+    <!-- ======================================= -->
+    <section class="w-full space-y-8">
+      <div class="text-center space-y-2">
+        <h2 class="font-playfair text-3xl sm:text-4xl text-silkGold font-bold">Nossas Memórias Especiais</h2>
+        <p class="text-softRose/80 text-sm md:text-base">Coleção de momentos inesquecíveis que vivemos neste mês.</p>
+        <p class="text-xs text-silkGold/80 italic">(Edite as legendas ou troque as fotos quando quiser!)</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-2">
+        
+        <!-- Polaroid 1 -->
+        <div class="bg-slate-100 p-4 rounded-2xl shadow-2xl transform hover:-rotate-2 hover:scale-105 transition duration-300 group border-4 border-white/90 relative">
+          <div class="relative overflow-hidden rounded-xl aspect-square bg-slate-800">
+            <img id="polaroid-1-img" src="img/Captura%20de%20tela%202026-10-24%20011310.png" alt="Foto Cauã e Carina juntos" class="w-full h-full object-cover">
+            <label class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white cursor-pointer transition duration-300 text-xs font-medium gap-2 p-2 text-center">
+              <i class="fa-solid fa-camera text-3xl text-silkGold"></i>
+             
+              <input type="file" accept="image/*" class="hidden" onchange="loadLocalPhoto(event, 'polaroid-1-img')">
+            </label>
+          </div>
+          <div class="mt-4 text-center">
+            <p contenteditable="true" class="font-greatVibes text-2xl text-slate-900 outline-none focus:bg-pink-100/60 rounded px-1">
+          </div>
+        </div>
+
+        <!-- Polaroid 2 -->
+        <div class="bg-slate-100 p-4 rounded-2xl shadow-2xl transform hover:rotate-2 hover:scale-105 transition duration-300 group border-4 border-white/90 relative">
+          <div class="relative overflow-hidden rounded-xl aspect-square bg-slate-800">
+            <img id="polaroid-2-img" src="img/Captura%20de%20tela%202026-10-24%20011342.png" alt="Foto Cauã e Carina fantasiados" class="w-full h-full object-cover">
+            <label class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white cursor-pointer transition duration-300 text-xs font-medium gap-2 p-2 text-center">
+              <i class="fa-solid fa-camera text-3xl text-silkGold"></i>
+              
+              <input type="file" accept="image/*" class="hidden" onchange="loadLocalPhoto(event, 'polaroid-2-img')">
+            </label>
+          </div>
+          <div class="mt-4 text-center">
+            <p contenteditable="true" class="font-greatVibes text-2xl text-slate-900 outline-none focus:bg-pink-100/60 rounded px-1">
+          </div>
+        </div>
+
+        <!-- Polaroid 3 -->
+        <div class="bg-slate-100 p-4 rounded-2xl shadow-2xl transform hover:-rotate-1 hover:scale-105 transition duration-300 group border-4 border-white/90 relative sm:col-span-2 lg:col-span-1 max-w-sm mx-auto w-full">
+          <div class="relative overflow-hidden rounded-xl aspect-square bg-slate-800">
+            <img id="polaroid-3-img" src="img/image.png" alt="Foto Cauã e Carina abraçados" class="w-full h-full object-cover">
+            <label class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white cursor-pointer transition duration-300 text-xs font-medium gap-2 p-2 text-center">
+              <i class="fa-solid fa-camera text-3xl text-silkGold"></i>
+              
+              <input type="file" accept="image/*" class="hidden" onchange="loadLocalPhoto(event, 'polaroid-3-img')">
+            </label>
+          </div>
+          <div class="mt-4 text-center">
+            <p contenteditable="true" class="font-greatVibes text-2xl text-slate-900 outline-none focus:bg-pink-100/60 rounded px-1">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ======================================= -->
+    <!-- 4. CARTA DE AMOR EM ENVELOPE 3D         -->
+    <!-- ======================================= -->
+    <section class="w-full space-y-6 flex flex-col items-center">
+      <div class="text-center space-y-2">
+        <h2 class="font-playfair text-3xl sm:text-4xl text-silkGold font-bold">Uma Carta do Cauã para a Carina</h2>
+        <p class="text-softRose/80 text-sm">Toque no envelope de cera para abrir e ler com todo o carinho.</p>
+      </div>
+
+      <div class="envelope-container my-10 w-full flex justify-center px-2">
+        <div id="envelope" class="envelope" onclick="openEnvelopeLetter()">
+          <div class="flap"></div>
+          
+          <!-- Lacre de Cera Dourado -->
+          <div id="envelope-seal" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-gradient-to-tr from-silkGold to-amber-200 rounded-full flex items-center justify-center shadow-2xl text-passionRed text-2xl border-2 border-white transition duration-300">
+            <i class="fa-solid fa-heart"></i>
+          </div>
+
+          <div class="letter custom-scroll">
+            <div class="space-y-4 font-playfair text-slate-900 text-sm sm:text-base leading-relaxed">
+              <p class="font-greatVibes text-3xl sm:text-4xl text-passionRed font-bold">Minha Princesa Carina,</p>
+              <p contenteditable="true" class="outline-none focus:ring-1 focus:ring-passionRed/40 rounded p-1">
+                Desde o dia 24 de Setembro de 2026, a minha vida ganhou um brilho totalmente diferente. Parece que o tempo voou nesses 30 dias, mas ao mesmo tempo sinto como se já nos conhecêssemos há uma vida inteira.
+              </p>
+              <p contenteditable="true" class="outline-none focus:ring-1 focus:ring-passionRed/40 rounded p-1">
+                Amo o seu sorriso, a sua risada gostosa, o seu abraço quentinho e até a forma única como você olha pra mim. Obrigado por ser minha companheira, minha melhor amiga e meu grande amor.
+              </p>
+              <p contenteditable="true" class="outline-none focus:ring-1 focus:ring-passionRed/40 rounded p-1">
+                Este é apenas o nosso 1º mês oficial de uma história linda que estamos construindo juntos. Te amo demais!
+              </p>
+              <p class="font-greatVibes text-2xl text-passionRed text-right pt-2 font-bold">Com todo o meu amor, Cauã ❤️</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================================= -->
+    <!-- 5. 30 RAZÕES PELAS QUAIS TE AMO (3D)    -->
+    <!-- ======================================= -->
+    <section class="w-full space-y-8">
+      <div class="text-center space-y-2">
+        <h2 class="font-playfair text-3xl sm:text-4xl text-silkGold font-bold">30 Razões Pelas Quais Eu Te Amo</h2>
+        <p class="text-softRose/80 text-sm">Uma razão especial para cada dia desse nosso primeiro mês juntos!</p>
+      </div>
+
+      <div class="max-w-md mx-auto">
+        <div id="reason-card" class="flip-card w-full h-72 cursor-pointer" onclick="flipReasonCard()">
+          <div class="flip-card-inner">
+            
+            <!-- Frente -->
+            <div class="flip-card-front bg-gradient-to-br from-passionRed via-pink-900 to-royalPurple border border-silkGold/30 shadow-2xl text-center">
+              <span class="text-xs font-semibold tracking-widest text-silkGold uppercase">Razão Nº <span id="reason-num">1</span> de 30</span>
+              <div class="my-auto">
+                <i class="fa-solid fa-heart-pulse text-4xl text-silkGold mb-3 animate-bounce"></i>
+                <p class="text-lg font-medium text-white">Toque no cartão para revelar o motivo ✨</p>
+              </div>
+              <span class="text-xs text-softRose/70">Clique para virar</span>
+            </div>
+
+            <!-- Verso -->
+            <div class="flip-card-back glass-card border border-passionRed/50 shadow-2xl text-center">
+              <span class="text-xs font-semibold tracking-widest text-passionRed uppercase">Cauã ❤️ Carina</span>
+              <p id="reason-text" class="font-playfair text-xl sm:text-2xl text-champagne italic my-auto px-2 leading-relaxed">
+                "O jeito único como seus olhos brilham quando você sorri para mim."
+              </p>
+              <span class="text-xs text-silkGold">Motivo Especial #1</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Botões de Navegação -->
+        <div class="flex items-center justify-between mt-6 px-2">
+          <button onclick="prevReason(event)" class="px-5 py-2.5 rounded-full bg-slate-900/80 hover:bg-slate-800 text-softRose text-sm font-medium border border-softRose/20 transition flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i> Anterior
+          </button>
+          
+          <span class="text-sm font-semibold text-champagne">
+            <span id="current-reason-index" class="text-silkGold font-bold">1</span> / 30
+          </span>
+
+          <button onclick="nextReason(event)" class="px-5 py-2.5 rounded-full bg-passionRed hover:bg-rose-600 text-white text-sm font-medium shadow-lg transition flex items-center gap-2">
+            Próxima <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================================= -->
+    <!-- 6. MINIJOGO 1: PEGAR CORAÇÕES DO CAUÃ   -->
+    <!-- ======================================= -->
+    <section class="w-full max-w-3xl">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden border-passionRed/30">
+        <div class="text-center space-y-2">
+          <span class="px-3 py-1 rounded-full bg-passionRed/20 text-passionRed text-xs font-bold uppercase tracking-wider">Minijogo Arcade 1</span>
+          <h2 class="font-playfair text-3xl text-silkGold font-bold">Atrape os Corações do Cauã! 💖</h2>
+          <p class="text-xs sm:text-sm text-softRose">Ajude a Carina a coletar todos os corações que o Cauã está enviando antes que o tempo acabe!</p>
+        </div>
+
+        <!-- Painel do Jogo -->
+        <div id="game1-container" class="relative w-full h-72 sm:h-80 bg-slate-950/80 rounded-2xl border border-passionRed/30 overflow-hidden cursor-crosshair">
+          
+          <!-- Canvas de captura de corações -->
+          <canvas id="game1-canvas" class="w-full h-full block"></canvas>
+
+          <!-- Overlay Inicial do Jogo -->
+          <div id="game1-start-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center space-y-4 p-4 text-center">
+            <i class="fa-solid fa-gamepad text-5xl text-silkGold animate-pulse"></i>
+            <p class="text-sm sm:text-base text-champagne font-medium max-w-md">Mova a cesta (mouse ou dedo no celular) para pegar os corações e marcar pontos!</p>
+            <button onclick="startGame1()" class="px-6 py-3 rounded-full bg-gradient-to-r from-passionRed to-pink-600 text-white font-bold text-sm shadow-xl hover:scale-105 transition">
+              🎮 Começar o Jogo
+            </button>
+          </div>
+
+          <!-- HUD Placar -->
+          <div id="game1-hud" class="absolute top-3 left-3 right-3 flex justify-between items-center text-xs sm:text-sm font-bold text-silkGold bg-black/50 px-4 py-2 rounded-xl backdrop-blur-md hidden pointer-events-none">
+            <span><i class="fa-solid fa-heart text-passionRed mr-1"></i> Pontos: <span id="game1-score">0</span></span>
+            <span><i class="fa-solid fa-stopwatch text-silkGold mr-1"></i> Tempo: <span id="game1-timer">20</span>s</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================================= -->
+    <!-- 7. MINIJOGO 2: QUIZ DO NOSSO AMOR       -->
+    <!-- ======================================= -->
+    <section class="w-full max-w-2xl">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 space-y-6 border-silkGold/30">
+        <div class="text-center space-y-2">
+          <span class="px-3 py-1 rounded-full bg-silkGold/20 text-silkGold text-xs font-bold uppercase tracking-wider">Minijogo 2</span>
+          <h2 class="font-playfair text-3xl text-silkGold font-bold">Quiz do Nosso Amor 🧠💕</h2>
+          <p class="text-xs sm:text-sm text-softRose">Carina, responda essas perguntas sobre Cauã & Carina!</p>
+        </div>
+
+        <div id="quiz-box" class="space-y-6 pt-2">
+          <!-- Pergunta Dinâmica -->
+          <div class="bg-slate-900/60 p-4 sm:p-6 rounded-2xl border border-rose-500/20 text-center">
+            <p id="quiz-question-num" class="text-xs text-silkGold font-bold uppercase mb-2">Pergunta 1 de 3</p>
+            <h3 id="quiz-question-text" class="font-playfair text-lg sm:text-xl text-champagne font-semibold">Qual é a data oficial do início do nosso namoro?</h3>
+          </div>
+
+          <!-- Opções de Resposta -->
+          <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Gerado Dinamicamente via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================================= -->
+    <!-- 8. RASPADINHA DO AMOR (SURPRESA)        -->
+    <!-- ======================================= -->
+    <section class="w-full max-w-xl text-center space-y-6">
+      <div class="space-y-2">
+        <h2 class="font-playfair text-3xl sm:text-4xl text-silkGold font-bold">Raspadinha do Amor 🎫</h2>
+        <p class="text-softRose text-sm">Carina, raspe a área abaixo com o dedo ou mouse para revelar um presente do Cauã!</p>
+      </div>
+
+      <div class="relative w-full max-w-md mx-auto aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border-2 border-silkGold/40 glass-card">
+        <!-- Recompensa Escondida por baixo -->
+        <div class="absolute inset-0 bg-gradient-to-br from-royalPurple via-deepVelvet to-passionRed p-6 flex flex-col items-center justify-center text-center space-y-3">
+          <i class="fa-solid fa-gift text-4xl text-silkGold animate-bounce"></i>
+          <h3 class="font-greatVibes text-3xl text-champagne font-bold">Vale Um Jantar Romântico Especial + Abraço Apertado do Cauã! 🕯️🍷</h3>
+          <p class="text-xs text-softRose font-medium">Válido para uso ilimitado a partir de hoje!</p>
+        </div>
+
+        <!-- Canvas da Raspadinha por cima -->
+        <canvas id="scratch-canvas" class="absolute inset-0 w-full h-full cursor-pointer z-10"></canvas>
+      </div>
+    </section>
+
+
+    <!-- ======================================= -->
+    <!-- 9. BOTÃO FINAL DE DECLARAÇÃO           -->
+    <!-- ======================================= -->
+    <section class="w-full text-center space-y-6 pt-6 pb-16">
+      <div class="space-y-2">
+        <h2 class="font-playfair text-3xl sm:text-4xl text-silkGold font-bold">Uma Última Pergunta...</h2>
+        <p class="text-softRose text-sm">Toque no botão gigante para confirmar todo o seu amor!</p>
+      </div>
+
+      <button onclick="triggerGrandDeclaration()" class="pulse-heartbeat bg-gradient-to-r from-passionRed via-rose-600 to-passionRed hover:from-rose-500 hover:to-rose-500 text-white font-bold text-lg sm:text-2xl px-10 py-6 rounded-full shadow-2xl border-2 border-silkGold transform hover:scale-105 active:scale-95 transition duration-300">
+        💖 Clique se você ama o Cauã! 💖
+      </button>
+    </section>
+
+  </div>
+
+
+  <!-- ======================================= -->
+  <!-- PLAYER FLUTUANTE DE MÚSICA              -->
+  <!-- ======================================= -->
+  <div class="fixed bottom-4 right-4 z-50">
+    <div class="glass-card rounded-full p-2.5 sm:p-3 pr-5 flex items-center gap-3 shadow-2xl border-passionRed/40 relative overflow-hidden group">
+      
+      <!-- Efeito de rotação do disco -->
+      <button id="music-toggle-btn" onclick="toggleRomanticMusic()" class="w-12 h-12 rounded-full bg-gradient-to-tr from-passionRed to-silkGold flex items-center justify-center text-slate-950 font-bold shadow-lg transition transform hover:scale-110 active:scale-95">
+        <i id="music-icon" class="fa-solid fa-play text-lg ml-0.5"></i>
+      </button>
+
+      <div class="text-left hidden sm:block">
+        <p class="text-xs font-bold text-silkGold tracking-wide">Dona</p>
+        <p id="music-subtitle" class="text-[10px] text-softRose/80">Roupa Nova • Ao Vivo</p>
+      </div>
+
+      <!-- Animação de notas musicais soltas -->
+      <div id="notes-anchor" class="absolute -top-2 right-4 pointer-events-none"></div>
+    </div>
+  </div>
+
+
+  <!-- ======================================= -->
+  <!-- MODAL DECLARAÇÃO FINAL                   -->
+  <!-- ======================================= -->
+  <div id="love-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card border-2 border-silkGold rounded-3xl p-6 sm:p-10 max-w-lg w-full text-center space-y-6 shadow-2xl relative transform scale-90 transition duration-300">
+      
+      <div class="w-20 h-20 bg-passionRed/30 text-passionRed rounded-full flex items-center justify-center text-4xl mx-auto border border-passionRed/60 shadow-inner">
+        ❤️
+      </div>
+
+      <h3 class="font-greatVibes text-4xl sm:text-5xl text-silkGold">Eu Te Amo, Carina!</h3>
+      
+      <p class="text-champagne text-base leading-relaxed font-light">
+        Obrigado por transformar este primeiro mês na melhor fase da minha vida. Que o nosso amor continue crescendo a cada dia!
+      </p>
+
+      <div class="p-4 bg-slate-950/60 rounded-2xl border border-silkGold/30">
+        <p class="font-playfair italic text-softRose text-sm">
+          "Você é a minha melhor escolha de todos os dias."
+        </p>
+      </div>
+
+      <button onclick="closeLoveModal()" class="w-full bg-gradient-to-r from-passionRed to-rose-600 text-white font-bold py-3.5 rounded-2xl transition shadow-xl hover:opacity-90">
+        Guardar no Coração 🥰
+      </button>
+
+    </div>
+  </div>
+
+
+  <!-- ======================================= -->
+  <!-- JAVASCRIPT COMPLETO E INTEGRADO         -->
+  <!-- ======================================= -->
+  <script>
+    // ----------------------------------------
+    // 1. ANIMAÇÃO DE CANVAS AMBIENTE (Luzes e Corações)
+    // ----------------------------------------
+    const ambientCanvas = document.getElementById('ambient-canvas');
+    const actx = ambientCanvas.getContext('2d');
+    let awidth = ambientCanvas.width = window.innerWidth;
+    let aheight = ambientCanvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      awidth = ambientCanvas.width = window.innerWidth;
+      aheight = ambientCanvas.height = window.innerHeight;
+    });
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * awidth;
+        this.y = Math.random() * aheight + aheight;
+        this.size = Math.random() * 10 + 4;
+        this.speedY = Math.random() * 1.2 + 0.4;
+        this.speedX = Math.sin(Math.random() * Math.PI) * 0.4;
+        this.opacity = Math.random() * 0.5 + 0.2;
+        this.hue = Math.random() * 20 + 340; // Vermelho/Rosa
+      }
+      update() {
+        this.y -= this.speedY;
+        this.x += Math.sin(this.y * 0.01) * 0.4;
+        if (this.y < -20) this.reset();
+      }
+      draw() {
+        actx.save();
+        actx.translate(this.x, this.y);
+        actx.beginPath();
+        actx.fillStyle = `hsla(${this.hue}, 85%, 65%, ${this.opacity})`;
+        
+        // Desenha pequeno coração
+        const topCurveHeight = this.size * 0.3;
+        actx.moveTo(0, topCurveHeight);
+        actx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
+        actx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size);
+        actx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
+        actx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
+        actx.closePath();
+        actx.fill();
+        actx.restore();
+      }
+    }
+
+    const particles = Array.from({ length: 45 }, () => new Particle());
+
+    function animateAmbient() {
+      actx.clearRect(0, 0, awidth, aheight);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateAmbient);
+    }
+    animateAmbient();
+
+
+    // ----------------------------------------
+    // 2. CONTADOR DE TEMPO EM TEMPO REAL
+    // ----------------------------------------
+    // Data oficial de início do namoro: 24 de Setembro de 2026
+    const startDate = new Date(2026, 8, 24, 0, 0, 0); 
+
+    function updateCounter() {
+      const now = new Date();
+      let diff = now - startDate;
+      
+      // Se por algum motivo for anterior à data fixa, trata de forma segura
+      if (diff < 0) diff = 30 * 24 * 60 * 60 * 1000;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('counter-days').innerText = String(days).padStart(2, '0');
+      document.getElementById('counter-hours').innerText = String(hours).padStart(2, '0');
+      document.getElementById('counter-minutes').innerText = String(minutes).padStart(2, '0');
+      document.getElementById('counter-seconds').innerText = String(seconds).padStart(2, '0');
+    }
+    setInterval(updateCounter, 1000);
+    updateCounter();
+
+
+    // ----------------------------------------
+    // 3. TRILHA SONORA LOCAL
+    // ----------------------------------------
+    const romanticAudio = document.getElementById('romantic-audio');
+    let isMusicPlaying = false;
+    let notesInterval = null;
+
+    romanticAudio.addEventListener('play', () => {
+      isMusicPlaying = true;
+      updateMusicUI(true);
+      startFloatingNotes();
+    });
+
+    romanticAudio.addEventListener('pause', () => {
+      isMusicPlaying = false;
+      updateMusicUI(false);
+      stopFloatingNotes();
+    });
+
+    romanticAudio.addEventListener('error', () => {
+      console.error('Não foi possível carregar o arquivo de áudio.', romanticAudio.error);
+      document.getElementById('music-subtitle').innerText = 'Erro ao carregar o áudio';
+    });
+
+    function toggleRomanticMusic() {
+      if (isMusicPlaying) {
+        romanticAudio.pause();
+      } else {
+        romanticAudio.play().catch((error) => {
+          console.error('Não foi possível reproduzir o áudio.', error);
+          updateMusicUI(false);
+          document.getElementById('music-subtitle').innerText = 'Não foi possível reproduzir';
+        });
+      }
+    }
+
+    function updateMusicUI(playing) {
+      const icon = document.getElementById('music-icon');
+      const subtitle = document.getElementById('music-subtitle');
+      if (playing) {
+        icon.className = "fa-solid fa-pause text-lg ml-0";
+        subtitle.innerText = "Tocando agora 💕";
+      } else {
+        icon.className = "fa-solid fa-play text-lg ml-0.5";
+        subtitle.innerText = "Pausado";
+      }
+    }
+
+    function startRomanticExperience() {
+      toggleRomanticMusic();
+      
+      // Dispara chuva suave de confetes pétalas
+      confetti({
+        particleCount: 60,
+        spread: 90,
+        origin: { y: 0.3 },
+        colors: ['#E60039', '#FFB3C1', '#F7D070']
+      });
+
+      // Rola suavemente até o contador
+      document.getElementById('counter-days').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function startFloatingNotes() {
+      if (notesInterval) clearInterval(notesInterval);
+      notesInterval = setInterval(() => {
+        const anchor = document.getElementById('notes-anchor');
+        if (!anchor) return;
+        const note = document.createElement('i');
+        note.className = "fa-solid fa-music note-anim";
+        note.style.left = `${Math.random() * 20 - 10}px`;
+        anchor.appendChild(note);
+        setTimeout(() => note.remove(), 3000);
+      }, 1200);
+    }
+
+    function stopFloatingNotes() {
+      if (notesInterval) clearInterval(notesInterval);
+    }
+
+
+    // ----------------------------------------
+    // 4. UPLOAD DE IMAGENS LOCAIS NAS POLAROIDS
+    // ----------------------------------------
+    function loadLocalPhoto(event, targetImgId) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById(targetImgId).src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+
+    // ----------------------------------------
+    // 5. ENVELOPE DE CERA DA CARTA DE AMOR
+    // ----------------------------------------
+    function openEnvelopeLetter() {
+      const env = document.getElementById('envelope');
+      const seal = document.getElementById('envelope-seal');
+      env.classList.toggle('open');
+      if (env.classList.contains('open')) {
+        seal.style.opacity = '0';
+      } else {
+        seal.style.opacity = '1';
+      }
+    }
+
+
+    // ----------------------------------------
+    // 6. 30 RAZÕES POR QUE TE AMO
+    // ----------------------------------------
+    const reasonsList = [
+      "O jeito único como seus olhos brilham quando você sorri para mim.",
+      "Como seu abraço consegue me acalmar mesmo nos dias difíceis.",
+      "O som doce da sua risada, que é a minha música favorita.",
+      "A forma carinhosa como você se preocupa comigo.",
+      "O seu selinho fofo e demorado antes de nos despedirmos.",
+      "Nossas conversas bobas sobre o futuro que me fazem sonhar.",
+      "A sua paciência gigantesca e o seu coração de ouro.",
+      "Como você fica linda até mesmo quando está brava.",
+      "O seu cafuné maravilhoso que me faz dormir em segundos.",
+      "A paz inexplicável que sinto quando seguro a sua mão.",
+      "O fato de você me apoiar em todos os meus objetivos.",
+      "A sintonia perfeita que temos em quase tudo.",
+      "O seu cheiro gostoso que fica grudado no meu casaco.",
+      "Sua capacidade de me fazer sorrir sem falar uma palavra.",
+      "A forma carinhosa como você me chama pelos apelidos fofos.",
+      "O carinho e dedicação que você coloca no nosso namoro.",
+      "O orgulho imenso que tenho de te apresentar como minha namorada.",
+      "Nossas piadas internas que só a gente entende.",
+      "Como você consegue transformar um dia simples no melhor dia.",
+      "Seu olhar sincero e cheio de amor para mim.",
+      "O jeito que você se lembra das coisas que eu gosto.",
+      "Porque ao seu lado eu posso ser 100% eu mesmo.",
+      "Como você deixa a minha vida mil vezes mais colorida.",
+      "Os seus beijos carinhosos no meio do nada.",
+      "A certeza de que encontrei a minha parceira de vida.",
+      "Como o tempo passa voando quando estamos juntos.",
+      "Sua beleza radiante por dentro e por fora.",
+      "O seu companheirismo leal em qualquer momento.",
+      "Porque você me inspira a ser um homem melhor a cada dia.",
+      "Porque este é só o 1º mês de uma vida inteira de felicidade ao seu lado! ❤️"
+    ];
+
+    let currentReasonIdx = 0;
+
+    function flipReasonCard() {
+      document.getElementById('reason-card').classList.toggle('flipped');
+    }
+
+    function updateReasonView() {
+      const card = document.getElementById('reason-card');
+      card.classList.remove('flipped');
+      
+      setTimeout(() => {
+        document.getElementById('reason-num').innerText = currentReasonIdx + 1;
+        document.getElementById('current-reason-index').innerText = currentReasonIdx + 1;
+        document.getElementById('reason-text').innerText = `"${reasonsList[currentReasonIdx]}"`;
+      }, 200);
+    }
+
+    function nextReason(event) {
+      event.stopPropagation();
+      currentReasonIdx = (currentReasonIdx + 1) % reasonsList.length;
+      updateReasonView();
+    }
+
+    function prevReason(event) {
+      event.stopPropagation();
+      currentReasonIdx = (currentReasonIdx - 1 + reasonsList.length) % reasonsList.length;
+      updateReasonView();
+    }
+
+
+    // ----------------------------------------
+    // 7. MINIJOGO 1: ATRAPE OS CORAÇÕES DO CAUÃ
+    // ----------------------------------------
+    const gCanvas = document.getElementById('game1-canvas');
+    const gctx = gCanvas.getContext('2d');
+    let gScore = 0;
+    let gTimeLeft = 20;
+    let gTimerInterval = null;
+    let gAnimFrame = null;
+    let gIsRunning = false;
+
+    // Posição da Cesta (Carina)
+    let basket = { x: 0, width: 70, height: 18, speed: 8 };
+    let fallingHearts = [];
+
+    function resizeGameCanvas() {
+      const rect = gCanvas.parentElement.getBoundingClientRect();
+      gCanvas.width = rect.width;
+      gCanvas.height = rect.height;
+      basket.x = gCanvas.width / 2 - basket.width / 2;
+    }
+    window.addEventListener('resize', resizeGameCanvas);
+
+    // Controles por Mouse e Touch
+    gCanvas.parentElement.addEventListener('mousemove', (e) => {
+      const rect = gCanvas.parentElement.getBoundingClientRect();
+      basket.x = e.clientX - rect.left - basket.width / 2;
+    });
+
+    gCanvas.parentElement.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        const rect = gCanvas.parentElement.getBoundingClientRect();
+        basket.x = e.touches[0].clientX - rect.left - basket.width / 2;
+      }
+    });
+
+    function startGame1() {
+      resizeGameCanvas();
+      document.getElementById('game1-start-overlay').classList.add('hidden');
+      document.getElementById('game1-hud').classList.remove('hidden');
+
+      gScore = 0;
+      gTimeLeft = 20;
+      fallingHearts = [];
+      gIsRunning = true;
+
+      document.getElementById('game1-score').innerText = gScore;
+      document.getElementById('game1-timer').innerText = gTimeLeft;
+
+      if (gTimerInterval) clearInterval(gTimerInterval);
+      gTimerInterval = setInterval(() => {
+        gTimeLeft--;
+        document.getElementById('game1-timer').innerText = gTimeLeft;
+        if (gTimeLeft <= 0) endGame1();
+      }, 1000);
+
+      game1Loop();
+    }
+
+    function game1Loop() {
+      if (!gIsRunning) return;
+
+      gctx.clearRect(0, 0, gCanvas.width, gCanvas.height);
+
+      // Limita a cesta dentro da tela
+      if (basket.x < 0) basket.x = 0;
+      if (basket.x + basket.width > gCanvas.width) basket.x = gCanvas.width - basket.width;
+
+      // Desenha a Cesta
+      gctx.fillStyle = '#F7D070';
+      gctx.beginPath();
+      gctx.roundRect(basket.x, gCanvas.height - 25, basket.width, basket.height, 8);
+      gctx.fill();
+
+      // Gera novos corações
+      if (Math.random() < 0.08) {
+        fallingHearts.push({
+          x: Math.random() * (gCanvas.width - 20) + 10,
+          y: -10,
+          speed: Math.random() * 2.5 + 2,
+          size: Math.random() * 10 + 12
+        });
+      }
+
+      // Atualiza e desenha corações
+      for (let i = fallingHearts.length - 1; i >= 0; i--) {
+        let h = fallingHearts[i];
+        h.y += h.speed;
+
+        // Desenha coração
+        gctx.fillStyle = '#E60039';
+        gctx.beginPath();
+        gctx.arc(h.x, h.y, h.size / 2, 0, Math.PI * 2);
+        gctx.fill();
+
+        // Checa Colisão com a Cesta
+        if (
+          h.y + h.size / 2 >= gCanvas.height - 25 &&
+          h.x >= basket.x &&
+          h.x <= basket.x + basket.width
+        ) {
+          gScore += 10;
+          document.getElementById('game1-score').innerText = gScore;
+          fallingHearts.splice(i, 1);
+          continue;
+        }
+
+        if (h.y > gCanvas.height + 20) {
+          fallingHearts.splice(i, 1);
+        }
+      }
+
+      gAnimFrame = requestAnimationFrame(game1Loop);
+    }
+
+    function endGame1() {
+      gIsRunning = false;
+      clearInterval(gTimerInterval);
+      cancelAnimationFrame(gAnimFrame);
+
+      const overlay = document.getElementById('game1-start-overlay');
+      overlay.classList.remove('hidden');
+      overlay.innerHTML = `
+        <i class="fa-solid fa-trophy text-5xl text-silkGold animate-bounce"></i>
+        <h3 class="font-greatVibes text-3xl text-champagne">Incrível, Carina!</h3>
+        <p class="text-sm text-softRose">Você coletou <strong>${gScore} pontos</strong> de amor do Cauã!</p>
+        <button onclick="startGame1()" class="px-6 py-2.5 rounded-full bg-passionRed text-white font-bold text-sm shadow-xl hover:scale-105 transition">
+          🔄 Jogar Novamente
+        </button>
+      `;
+
+      confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
+    }
+
+
+    // ----------------------------------------
+    // 8. MINIJOGO 2: QUIZ DO NOSSO AMOR
+    // ----------------------------------------
+    const quizQuestions = [
+      {
+        question: "Qual é a data oficial em que o Cauã e a Carina começaram a namorar?",
+        options: ["24 de Setembro de 2026", "12 de Outubro de 2026", "24 de Agosto de 2026", "01 de Setembro de 2026"],
+        answer: 0
+      },
+      {
+        question: "O que o Cauã mais ama quando está ao lado da Carina?",
+        options: ["O abraço e o sorriso dela", "As risadas juntos", "A paz de estar com ela", "Todas as alternativas acima!"],
+        answer: 3
+      },
+      {
+        question: "Quanto tempo dura o amor do Cauã pela Carina?",
+        options: ["1 mês", "10 anos", "Para todo o sempre! ❤️", "Até semana que vem"],
+        answer: 2
+      }
+    ];
+
+    let currentQuizIdx = 0;
+    let quizScore = 0;
+
+    function renderQuizQuestion() {
+      const q = quizQuestions[currentQuizIdx];
+      document.getElementById('quiz-question-num').innerText = `Pergunta ${currentQuizIdx + 1} de ${quizQuestions.length}`;
+      document.getElementById('quiz-question-text').innerText = q.question;
+
+      const optsContainer = document.getElementById('quiz-options');
+      optsContainer.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "p-3.5 rounded-xl bg-slate-900/80 hover:bg-passionRed/30 border border-rose-500/30 text-left text-sm font-medium text-champagne transition flex items-center justify-between group";
+        btn.innerHTML = `<span>${opt}</span> <i class="fa-solid fa-heart text-xs opacity-0 group-hover:opacity-100 text-passionRed"></i>`;
+        btn.onclick = () => selectQuizAnswer(idx);
+        optsContainer.appendChild(btn);
+      });
+    }
+
+    function selectQuizAnswer(selectedIdx) {
+      if (selectedIdx === quizQuestions[currentQuizIdx].answer) {
+        quizScore++;
+      }
+
+      currentQuizIdx++;
+      if (currentQuizIdx < quizQuestions.length) {
+        renderQuizQuestion();
+      } else {
+        showQuizResults();
+      }
+    }
+
+    function showQuizResults() {
+      const box = document.getElementById('quiz-box');
+      box.innerHTML = `
+        <div class="text-center space-y-4 py-4">
+          <i class="fa-solid fa-award text-5xl text-silkGold animate-bounce"></i>
+          <h3 class="font-greatVibes text-4xl text-champagne">Parabéns, Carina!</h3>
+          <p class="text-sm text-softRose">Você acertou <strong>${quizScore} de ${quizQuestions.length}</strong> perguntas!</p>
+          <p class="text-xs text-silkGold italic">"O amor de vocês tirou nota 10 com louvor!"</p>
+          <button onclick="resetQuiz()" class="px-6 py-2.5 rounded-full bg-passionRed text-white font-bold text-sm shadow-xl hover:scale-105 transition">
+            🔄 Refazer Quiz
+          </button>
+        </div>
+      `;
+      confetti({ particleCount: 60, spread: 80, origin: { y: 0.6 } });
+    }
+
+    function resetQuiz() {
+      currentQuizIdx = 0;
+      quizScore = 0;
+      const box = document.getElementById('quiz-box');
+      box.innerHTML = `
+        <div class="bg-slate-900/60 p-4 sm:p-6 rounded-2xl border border-rose-500/20 text-center">
+          <p id="quiz-question-num" class="text-xs text-silkGold font-bold uppercase mb-2">Pergunta 1 de 3</p>
+          <h3 id="quiz-question-text" class="font-playfair text-lg sm:text-xl text-champagne font-semibold"></h3>
+        </div>
+        <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+      `;
+      renderQuizQuestion();
+    }
+    renderQuizQuestion();
+
+
+    // ----------------------------------------
+    // 9. RASPADINHA DO AMOR (CANVAS)
+    // ----------------------------------------
+    const scratchCanvas = document.getElementById('scratch-canvas');
+    const sctx = scratchCanvas.getContext('2d');
+    let isScratching = false;
+
+    function initScratchCard() {
+      scratchCanvas.width = scratchCanvas.parentElement.clientWidth;
+      scratchCanvas.height = scratchCanvas.parentElement.clientHeight;
+
+      // Camada prateada raspável
+      sctx.fillStyle = '#A3A3A3';
+      sctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+
+      // Texto de instrução
+      sctx.fillStyle = '#262626';
+      sctx.font = 'bold 16px Outfit, sans-serif';
+      sctx.textAlign = 'center';
+      sctx.fillText('✨ RASPE AQUI COM O DEDO OU MOUSE ✨', scratchCanvas.width / 2, scratchCanvas.height / 2);
+    }
+    window.addEventListener('load', initScratchCard);
+
+    function scratch(e) {
+      if (!isScratching) return;
+      const rect = scratchCanvas.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      sctx.globalCompositeOperation = 'destination-out';
+      sctx.beginPath();
+      sctx.arc(x, y, 25, 0, Math.PI * 2);
+      sctx.fill();
+    }
+
+    scratchCanvas.addEventListener('mousedown', () => isScratching = true);
+    scratchCanvas.addEventListener('mouseup', () => isScratching = false);
+    scratchCanvas.addEventListener('mousemove', scratch);
+
+    scratchCanvas.addEventListener('touchstart', () => isScratching = true);
+    scratchCanvas.addEventListener('touchend', () => isScratching = false);
+    scratchCanvas.addEventListener('touchmove', scratch);
+
+
+    // ----------------------------------------
+    // 10. DECLARAÇÃO FINAL E CONFETES MASSIVOS
+    // ----------------------------------------
+    function triggerGrandDeclaration() {
+      // Dispara chuva gigante de confetes
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#E60039', '#FFB3C1', '#F7D070']
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#E60039', '#FFB3C1', '#F7D070']
+        });
+
+        if (Date.now() < animationEnd) {
+          requestAnimationFrame(frame);
+        }
+      }());
+
+      setTimeout(() => {
+        document.getElementById('love-modal').classList.remove('hidden');
+      }, 500);
+    }
+
+    function closeLoveModal() {
+      document.getElementById('love-modal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
